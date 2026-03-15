@@ -79,7 +79,9 @@ The frontend will run on `http://localhost:5173` (Vite default).
 ### 4. Access the Application
 
 - Open your browser and go to `http://localhost:5173`.
-- Register as a new user or login.
+- Use the landing page to learn about the system and navigate to login/register.
+- After login, customers will be redirected to `/app` for feedback submission.
+- Admins are redirected to `/app/dashboard` to access analytics and management.
 - For admin access, use the default admin account: email `admin@example.com`, password `admin123` (you need to hash it properly or update the schema).
 
 ## API Endpoints
@@ -115,13 +117,29 @@ The frontend will run on `http://localhost:5173` (Vite default).
 └── frontend/
     ├── src/
     │   ├── components/
+    │   │   ├── layout/
+    │   │   │   ├── AdminLayout.jsx
+    │   │   │   ├── CustomerLayout.jsx
+    │   │   │   ├── Header.jsx
+    │   │   │   └── Sidebar.jsx
+    │   │   ├── ui/
+    │   │   │   ├── Badge.jsx
+    │   │   │   ├── Button.jsx
+    │   │   │   ├── Card.jsx
+    │   │   │   ├── Input.jsx
+    │   │   │   └── ToastContainer.jsx
     │   │   └── ProtectedRoute.jsx
+    │   ├── context/
+    │   │   ├── ThemeContext.jsx
+    │   │   └── ToastContext.jsx
     │   ├── pages/
-    │   │   ├── Login.jsx
-    │   │   ├── Register.jsx
-    │   │   ├── FeedbackForm.jsx
-    │   │   ├── Dashboard.jsx
-    │   │   └── Analytics.jsx
+    │   │   ├── Home.jsx
+    │   │   ├── LoginPage.jsx
+    │   │   ├── RegisterPage.jsx
+    │   │   ├── FeedbackPage.jsx
+    │   │   ├── AdminDashboard.jsx
+    │   │   ├── FeedbackManagement.jsx
+    │   │   └── AnalyticsPage.jsx
     │   ├── App.jsx
     │   ├── main.jsx
     │   └── index.css

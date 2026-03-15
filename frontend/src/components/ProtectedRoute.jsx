@@ -1,18 +1,18 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from "react-router-dom";
 
 const ProtectedRoute = ({ children, adminOnly = false }) => {
-  const token = localStorage.getItem('token');
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   if (!token) {
     return <Navigate to="/login" />;
   }
 
-  if (adminOnly && user.role !== 'admin') {
+  if (adminOnly && user.role !== "admin") {
     return <Navigate to="/" />;
   }
 
-  return children;
+  return children ? children : <Outlet />;
 };
 
 export default ProtectedRoute;

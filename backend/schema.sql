@@ -23,4 +23,4 @@ CREATE TABLE IF NOT EXISTS feedback (
 );
 
 -- Insert a default admin user (password: admin123)
-INSERT INTO users (name, email, password, role) VALUES ('Admin', 'admin@example.com', '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin');
+INSERT INTO users (name, email, password, role) VALUES ('Admin', 'admin@example.com', '$2b$10$5nD9eHRapv0AW/udgQkNn.nTj9wWlXQ4dmOXzeWCmy3TVDP2ZU4Va', 'admin');
