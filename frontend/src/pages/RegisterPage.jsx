@@ -28,12 +28,17 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center px-4 py-16">
-      <Card className="w-full max-w-md p-10">
-        <h2 className="text-center text-2xl font-semibold text-white">Create your account</h2>
-        <p className="mt-2 text-center text-sm text-slate-300">Start collecting feedback with sentiment insights.</p>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50 px-4 py-16 dark:bg-slate-950">
+      <div className="mb-8 text-center">
+        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-cyan-400 text-xl font-bold text-white shadow-lg">
+          AI
+        </div>
+        <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Create your account</h2>
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Start collecting feedback with sentiment insights.</p>
+      </div>
 
-        <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+      <Card className="w-full max-w-md">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             type="text"
             icon={FiUser}
@@ -63,9 +68,9 @@ const RegisterPage = () => {
           </Button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-slate-300">
+        <p className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
           Already have an account?{' '}
-          <Link to="/login" className="text-indigo-200 hover:text-white">
+          <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
             Sign in
           </Link>
         </p>

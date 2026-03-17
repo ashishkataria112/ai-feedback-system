@@ -14,11 +14,11 @@ const AdminLayout = () => {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden text-white">
+    <div className="flex h-screen overflow-hidden bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
       <Sidebar onLogout={handleLogout} collapsed={collapsed} onToggle={() => setCollapsed((prev) => !prev)} />
       <div className="flex flex-1 flex-col overflow-hidden">
         <Header title="Admin Dashboard" />
-        <main className="flex-1 overflow-y-auto px-4 pb-8 pt-2 sm:px-6">
+        <main className="flex-1 overflow-y-auto bg-slate-50 px-4 pb-8 pt-6 dark:bg-slate-950 sm:px-6">
           <Outlet />
         </main>
       </div>

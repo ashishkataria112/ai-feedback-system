@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Card from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
-import { FiTrendingUp } from 'react-icons/fi';
+import { FiMessageSquare, FiSmile, FiFrown, FiMinus, FiArrowRight } from 'react-icons/fi';
 
 const statCards = [
-  { key: 'total', label: 'Total Feedback', icon: FiTrendingUp, gradient: 'from-indigo-500 to-cyan-500' },
-  { key: 'positive', label: 'Positive', icon: FiTrendingUp, gradient: 'from-emerald-500 to-emerald-400' },
-  { key: 'negative', label: 'Negative', icon: FiTrendingUp, gradient: 'from-rose-500 to-rose-400' },
-  { key: 'neutral', label: 'Neutral', icon: FiTrendingUp, gradient: 'from-slate-500 to-slate-400' },
+  { key: 'total', label: 'Total Feedback', icon: FiMessageSquare, color: 'text-indigo-600 dark:text-indigo-400', bg: 'bg-indigo-50 dark:bg-indigo-500/10' },
+  { key: 'positive', label: 'Positive', icon: FiSmile, color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-500/10' },
+  { key: 'negative', label: 'Negative', icon: FiFrown, color: 'text-rose-600 dark:text-rose-400', bg: 'bg-rose-50 dark:bg-rose-500/10' },
+  { key: 'neutral', label: 'Neutral', icon: FiMinus, color: 'text-slate-600 dark:text-slate-400', bg: 'bg-slate-100 dark:bg-slate-800' },
 ];
 
 const AdminDashboard = () => {
@@ -17,78 +17,66 @@ const AdminDashboard = () => {
   const [analytics, setAnalytics] = useState({ total: 0, positive: 0, negative: 0, neutral: 0 });
 
   useEffect(() => {
-    const fetchFeedback = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const res = await axios.get('/api/feedback', { headers: { Authorization: `Bearer ${token}` } });
-        setFeedbacks(res.data);
-      } catch (err) {
-        console.error('Failed to fetch feedbacks');
-      }
-    };
+    const token = localStorage.getItem('token');
+    const headers = { Authorization: `Bearer ${token}` };
 
-    const fetchAnalytics = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const res = await axios.get('/api/admin/analytics', { headers: { Authorization: `Bearer ${token}` } });
-        setAnalytics(res.data);
-      } catch (err) {
-        console.error('Failed to fetch analytics');
-      }
-    };
-
-    fetchFeedback();
-    fetchAnalytics();
+    axios.get('/api/feedback', { headers }).then((res) => setFeedbacks(res.data)).catch(console.error);
+    axios.get('/api/admin/analytics', { headers }).then((res) => setAnalytics(res.data)).catch(console.error);
   }, []);
 
-  const recent = useMemo(() => {
-    return [...feedbacks].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 5);
-  }, [feedbacks]);
+  const recent = useMemo(
+    () => [...feedbacks].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 5),
+    [feedbacks]
+  );
 
   return (
     <div className="space-y-8">
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {statCards.map((card) => (
-          <Card key={card.key} className="relative overflow-hidden">
-            <div className="flex items-start justify-between gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {statCards.map((card) => {
+          const Icon = card.icon;
+          return (
+            <Card key={card.key} className="flex items-center gap-4">
+              <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${card.bg}`}>
+                <Icon className={`h-6 w-6 ${card.color}`} />
+              </div>
               <div>
-                <p className="text-sm font-semibold text-slate-200">{card.label}</p>
-                <p className="mt-2 text-3xl font-bold text-white">{analytics[card.key] ?? 0}</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{card.label}</p>
+                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{analytics[card.key] ?? 0}</p>
               </div>
-              <div className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${card.gradient} bg-opacity-80 shadow-lg`}>
-                <card.icon className="h-6 w-6 text-white" />
-              </div>
-            </div>
-          </Card>
-        ))}
+            </Card>
+          );
+        })}
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-semibold">Recent Feedback</h2>
-              <p className="text-sm text-slate-300">Latest entries from customers</p>
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Recent Feedback</h2>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Latest entries from customers</p>
             </div>
-            <Link to="/app/feedbacks" className="text-sm font-semibold text-indigo-200 hover:text-white">
-              View all
+            <Link
+              to="/app/feedbacks"
+              className="flex items-center gap-1 text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+            >
+              View all <FiArrowRight className="h-4 w-4" />
             </Link>
           </div>
 
-          <div className="mt-6 space-y-4">
+          <div className="mt-6 space-y-3">
             {recent.length === 0 ? (
-              <p className="text-sm text-slate-300">No feedback found yet.</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">No feedback found yet.</p>
             ) : (
               recent.map((item) => (
-                <div key={item.id} className="rounded-xl border border-white/10 p-4">
-                  <div className="flex flex-wrap items-center justify-between gap-4">
+                <div key={item.id} className="rounded-xl border border-slate-100 p-4 dark:border-slate-800">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
                     <div>
-                      <p className="text-sm font-semibold text-white">{item.name}</p>
-                      <p className="text-xs text-slate-400">{item.email}</p>
+                      <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{item.name}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">{item.email}</p>
                     </div>
-                    <Badge sentiment={item.sentiment} />
+                    <Badge sentiment={item.sentiment}>{item.sentiment}</Badge>
                   </div>
-                  <p className="mt-2 text-sm text-slate-200 line-clamp-2">{item.feedback_text}</p>
+                  <p className="mt-2 line-clamp-2 text-sm text-slate-600 dark:text-slate-300">{item.feedback_text}</p>
                 </div>
               ))
             )}
@@ -96,19 +84,19 @@ const AdminDashboard = () => {
         </Card>
 
         <Card>
-          <h2 className="text-lg font-semibold">Quick Actions</h2>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Quick Actions</h2>
           <div className="mt-4 flex flex-col gap-3">
             <Link
               to="/app/analytics"
-              className="rounded-xl bg-white/10 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/15"
+              className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-indigo-50 hover:text-indigo-600 dark:border-slate-800 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:bg-indigo-500/10 dark:hover:text-indigo-400"
             >
-              View analytics charts
+              View analytics charts <FiArrowRight className="h-4 w-4" />
             </Link>
             <Link
               to="/app/feedbacks"
-              className="rounded-xl bg-white/10 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/15"
+              className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-indigo-50 hover:text-indigo-600 dark:border-slate-800 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:bg-indigo-500/10 dark:hover:text-indigo-400"
             >
-              Manage all feedback
+              Manage all feedback <FiArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </Card>

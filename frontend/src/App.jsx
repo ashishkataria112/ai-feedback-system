@@ -17,7 +17,7 @@ function App() {
     <ThemeProvider>
       <ToastProvider>
         <Router>
-          <div className="min-h-screen">
+          <div className="min-h-screen bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<LoginPage />} />
