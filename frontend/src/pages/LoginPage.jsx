@@ -1,9 +1,8 @@
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiAtSign, FiLock } from 'react-icons/fi';
+import { FiAtSign, FiLock, FiArrowRight } from 'react-icons/fi';
 import axios from 'axios';
-import Card from '../components/ui/Card';
-import Button from '../components/ui/Button';
+import AuthLayout from '../components/layout/AuthLayout';
 import Input from '../components/ui/Input';
 import ToastContext from '../context/ToastContext';
 
@@ -20,8 +19,8 @@ const LoginPage = () => {
       const res = await axios.post('/api/auth/login', formData);
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
-      navigate(res.data.user.role === 'admin' ? '/app/dashboard' : '/app');
       toast('Welcome back!', 'success');
+      navigate(res.data.user.role === 'admin' ? '/app/dashboard' : '/app');
     } catch (err) {
       toast(err.response?.data?.message || 'Login failed', 'error');
     } finally {
@@ -30,46 +29,70 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50 px-4 py-16 dark:bg-slate-950">
-      <div className="mb-8 text-center">
-        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-cyan-400 text-xl font-bold text-white shadow-lg">
-          AI
-        </div>
-        <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Sign in to your account</h2>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Enter your credentials to access the dashboard.</p>
+    <AuthLayout
+      heading="Welcome back"
+      subheading="Sign in to your SentimentAI account"
+      panelTitle="Understand your customers in real time."
+      panelSub="Sign in and get back to the insights that matter most to your team."
+    >
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <Input
+          type="email"
+          icon={FiAtSign}
+          value={formData.email}
+          onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
+          placeholder="you@example.com"
+          autoComplete="email"
+          required
+        />
+        <Input
+          type="password"
+          icon={FiLock}
+          value={formData.password}
+          onChange={(e) => setFormData((p) => ({ ...p, password: e.target.value }))}
+          placeholder="Your password"
+          autoComplete="current-password"
+          required
+        />
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="group flex w-full items-center justify-center gap-2 rounded-full bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 disabled:pointer-events-none disabled:opacity-60"
+        >
+          {loading ? (
+            <>
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+              Signing in…
+            </>
+          ) : (
+            <>
+              Sign in
+              <FiArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </>
+          )}
+        </button>
+      </form>
+
+      {/* Divider */}
+      <div className="my-6 flex items-center gap-3">
+        <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800" />
+        <span className="text-xs text-slate-400 dark:text-slate-500">or</span>
+        <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800" />
       </div>
 
-      <Card className="w-full max-w-md">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            type="email"
-            icon={FiAtSign}
-            value={formData.email}
-            onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
-            placeholder="you@example.com"
-            required
-          />
-          <Input
-            type="password"
-            icon={FiLock}
-            value={formData.password}
-            onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))}
-            placeholder="Your password"
-            required
-          />
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Signing in…' : 'Sign in'}
-          </Button>
-        </form>
-
-        <p className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
-          Don't have an account?{' '}
-          <Link to="/register" className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
-            Create one
-          </Link>
-        </p>
-      </Card>
-    </div>
+      {/* Switch to Register */}
+      <div className="rounded-2xl border border-slate-200 bg-white p-5 text-center dark:border-slate-800 dark:bg-slate-900">
+        <p className="text-sm text-slate-500 dark:text-slate-400">Don't have an account?</p>
+        <Link
+          to="/register"
+          className="mt-2 flex items-center justify-center gap-1.5 text-sm font-semibold text-indigo-600 transition hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+        >
+          Create a free account
+          <FiArrowRight className="h-3.5 w-3.5" />
+        </Link>
+      </div>
+    </AuthLayout>
   );
 };
 
