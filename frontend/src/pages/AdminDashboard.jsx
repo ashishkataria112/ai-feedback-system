@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Card from '../components/ui/Card';
+
+const API = import.meta.env.VITE_API_URL;
 import Badge from '../components/ui/Badge';
 import { FiMessageSquare, FiSmile, FiFrown, FiMinus, FiArrowRight } from 'react-icons/fi';
 
@@ -20,8 +22,8 @@ const AdminDashboard = () => {
     const token = localStorage.getItem('token');
     const headers = { Authorization: `Bearer ${token}` };
 
-    axios.get('/api/feedback', { headers }).then((res) => setFeedbacks(res.data)).catch(console.error);
-    axios.get('/api/admin/analytics', { headers }).then((res) => setAnalytics(res.data)).catch(console.error);
+    axios.get(`${API}/api/feedback`, { headers }).then((res) => setFeedbacks(res.data)).catch(console.error);
+    axios.get(`${API}/api/admin/analytics`, { headers }).then((res) => setAnalytics(res.data)).catch(console.error);
   }, []);
 
   const recent = useMemo(

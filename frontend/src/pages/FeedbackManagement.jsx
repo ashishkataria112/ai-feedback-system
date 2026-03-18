@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import Badge from '../components/ui/Badge';
+
+const API = import.meta.env.VITE_API_URL;
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import { FiSearch } from 'react-icons/fi';
@@ -26,7 +28,7 @@ const FeedbackManagement = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('/api/feedback', { headers: { Authorization: `Bearer ${token}` } });
+        const res = await axios.get(`${API}/api/feedback`, { headers: { Authorization: `Bearer ${token}` } });
         setFeedback(res.data);
       } catch (err) {
         console.error('Failed to load feedback');

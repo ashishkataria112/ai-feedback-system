@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
 
+const API = import.meta.env.VITE_API_URL;
+
 const FeedbackForm = () => {
   const [feedback, setFeedback] = useState('');
   const [sentiment, setSentiment] = useState('');
@@ -10,7 +12,7 @@ const FeedbackForm = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.post('/api/feedback', { feedback_text: feedback }, {
+      const res = await axios.post(`${API}/api/feedback`, { feedback_text: feedback }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSentiment(res.data.sentiment);

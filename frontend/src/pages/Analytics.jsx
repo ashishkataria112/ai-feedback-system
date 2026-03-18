@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+
+const API = import.meta.env.VITE_API_URL;
 import { Pie, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement } from 'chart.js';
 
@@ -13,7 +15,7 @@ const Analytics = () => {
     const fetchAnalytics = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('/api/admin/analytics', {
+        const res = await axios.get(`${API}/api/admin/analytics`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setAnalytics(res.data);

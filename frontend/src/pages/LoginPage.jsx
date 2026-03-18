@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FiAtSign, FiLock, FiArrowRight } from 'react-icons/fi';
 import axios from 'axios';
 import AuthLayout from '../components/layout/AuthLayout';
+
+const API = import.meta.env.VITE_API_URL;
 import Input from '../components/ui/Input';
 import ToastContext from '../context/ToastContext';
 
@@ -16,7 +18,7 @@ const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post('/api/auth/login', formData);
+      const res = await axios.post(`${API}/api/auth/login`, formData);
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
       toast('Welcome back!', 'success');

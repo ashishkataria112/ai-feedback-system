@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+const API = import.meta.env.VITE_API_URL;
+
 const Dashboard = () => {
   const [feedbacks, setFeedbacks] = useState([]);
 
@@ -9,7 +11,7 @@ const Dashboard = () => {
     const fetchFeedbacks = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('/api/feedback', {
+        const res = await axios.get(`${API}/api/feedback`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setFeedbacks(res.data);

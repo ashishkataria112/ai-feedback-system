@@ -1,6 +1,8 @@
 import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Pie, Bar, Line } from 'react-chartjs-2';
+
+const API = import.meta.env.VITE_API_URL;
 import {
   Chart as ChartJS, ArcElement, Tooltip, Legend,
   CategoryScale, LinearScale, BarElement, PointElement, LineElement,
@@ -19,7 +21,7 @@ const AnalyticsPage = () => {
     const fetchAnalytics = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('/api/admin/analytics', { headers: { Authorization: `Bearer ${token}` } });
+        const res = await axios.get(`${API}/api/admin/analytics`, { headers: { Authorization: `Bearer ${token}` } });
         setAnalytics(res.data);
         const labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
         setTrend({ labels, data: labels.map((_, i) => Math.max(0, res.data.total - (3 - i) * 2)) });

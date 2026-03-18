@@ -2,6 +2,8 @@ import { useState, useContext } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import Badge from '../components/ui/Badge';
+
+const API = import.meta.env.VITE_API_URL;
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import ToastContext from '../context/ToastContext';
@@ -28,7 +30,7 @@ const FeedbackPage = () => {
     try {
       const token = localStorage.getItem('token');
       const res = await axios.post(
-        '/api/feedback',
+        `${API}/api/feedback`,
         { feedback_text: feedback },
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -6,6 +6,8 @@ import AuthLayout from '../components/layout/AuthLayout';
 import Input from '../components/ui/Input';
 import ToastContext from '../context/ToastContext';
 
+const API = import.meta.env.VITE_API_URL;
+
 const RegisterPage = () => {
   const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'customer' });
   const [loading, setLoading] = useState(false);
@@ -16,7 +18,7 @@ const RegisterPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post('/api/auth/register', formData);
+      await axios.post(`${API}/api/auth/register`, formData);
       toast('Account created! Please sign in.', 'success');
       navigate('/login');
     } catch (err) {
